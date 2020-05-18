@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "template-api",
+      "script": "src/scripts/index.ts",
+      "args": "start",
+      "exec_interpreter": "babel-node",
+      "interpreter_args": "--extensions \".ts\"",
+      "watch": ["src"],
+      "instances": 1,
+      "autorestart": false,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
+}
