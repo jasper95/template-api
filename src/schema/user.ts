@@ -45,6 +45,7 @@ const USER_TABLE: Table = {
       column_name: 'last_login_date',
       type: 'timestamp',
       type_params: [{ useTz: true }],
+      is_read_only: true,
     },
     {
       column_name: 'old_user_id',

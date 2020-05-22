@@ -17,19 +17,7 @@ export default {
     },
   ],
   tags: [],
-  security: [
-    {
-      cookieAuth: [],
-    },
-  ],
   components: {
-    securitySchemes: {
-      cookieAuth: {
-        type: 'apiKey',
-        in: 'cookie',
-        name: 'access_token',
-      },
-    },
     responses: {
       NotFound: {
         description: 'The specified resource was not found',

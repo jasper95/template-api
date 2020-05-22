@@ -3,7 +3,6 @@ import { Logger } from 'winston'
 import QueryWrapper from 'utils/dbwrapper'
 import Knex, { ConnectionConfig as KnexConnectionConfig, Raw, QueryCallback } from 'knex'
 import { User, AuthSession } from './generated/models'
-import AppointmentModel from 'app/appointment/model'
 import AuthModel from 'app/auth/model'
 import BaseModel from 'app/base/model'
 import FileModel from 'app/file/model'
@@ -95,7 +94,6 @@ export interface ServiceLocator {
 }
 
 export interface ModelService {
-  appointment: AppointmentModel
   auth: AuthModel
   base: BaseModel
   file: FileModel
@@ -132,6 +130,7 @@ export interface Column {
   on_update?: string
   type_params?: any[]
   schema?: JSONSchema7
+  is_read_only?: boolean
 }
 
 export interface Table {
@@ -190,6 +189,7 @@ export type SwaggerParams = {
   description?: string
   summary?: string
   schema?: any
+  response_schema?: any
 }
 
 export interface RouteDefinition {

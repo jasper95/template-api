@@ -6,7 +6,7 @@ import { Controller } from 'utils/decorators/Controller'
 import { Get, Post, Put } from 'utils/decorators/Routes'
 import Validator from 'utils/decorators/Validator'
 import { LoginValidator, ForgotPasswordValidator, ResetPasswordValidator } from './validator'
-import { BadRequestError } from 'restify-errors'
+import { BadRequestError, UnauthorizedError } from 'restify-errors'
 import { QueryBuilder } from 'knex'
 import { LoginSchema, ForgotPasswordSchema } from 'types'
 import { isAfter } from 'date-fns'
@@ -45,6 +45,9 @@ export default class UserController extends AppService {
 
   @Get('/session', { summary: 'Get logged in user session' })
   async getSession({ user }: Request) {
+    if (!user) {
+      throw new UnauthorizedError('Invalid token')
+    }
     return user
   }
 
@@ -52,8 +55,8 @@ export default class UserController extends AppService {
   @Validator(LoginValidator)
   async login({ params }: Request<LoginSchema>, res: Response) {
     const { email, password } = params
-    const filter = (query: QueryBuilder) => query.where({ name: email })
-    let [user] = await this.DB.filter<User>('user', filter)
+    const filter = (query: QueryBuilder) => query.where({ email })
+    const [user] = await this.DB.filter<User>('user', filter)
     if (!user) {
       throw new BadRequestError('Invalid username or password')
     }
@@ -135,7 +138,7 @@ export default class UserController extends AppService {
         'MM/DD/YYYY h:mm:ss A EST',
       ),
     })
-    let { email } = user
+    const { email } = user
     await sendSendGridEmail(email, html, `${process.env.PROJECT_NAME} Reset Password Success Confirmation`)
     return { success: true }
   }

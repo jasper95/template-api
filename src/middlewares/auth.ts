@@ -27,7 +27,7 @@ export default async function authMiddleware(req: Request, res: Response, next: 
   const DB = serviceLocator.get('DB')
   const logger = serviceLocator.get('logger')
   req.authenticated = true
-  const { authorization } = req.headers
+  const { authorization, referer } = req.headers
   if (matchRoutes(public_routes, req) || req.getPath().includes('/api-docs/')) {
     return next()
   }
@@ -58,6 +58,9 @@ export default async function authMiddleware(req: Request, res: Response, next: 
       error = 'Invalid access token'
       invalid_token = true
     }
+  }
+  if (referer?.includes('/api-docs')) {
+    return next()
   }
   if (!matchRoutes(public_routes, req)) {
     if (

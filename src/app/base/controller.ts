@@ -3,11 +3,19 @@ import AppService from 'utils/base/AppService'
 import { Controller } from 'utils/decorators/Controller'
 import { Get, Post, Put, Delete } from 'utils/decorators/Routes'
 import { NotFoundError } from 'restify-errors'
-import { GET_NODE_DETAILS_PARAMS, GET_NODE_LIST_PARAMS, CREATE_NODE_BODY, GET_BY_NODE_PATH } from './docs'
+import {
+  GET_NODE_DETAILS_PARAMS,
+  GET_NODE_LIST_PARAMS,
+  CREATE_NODE_BODY,
+  GET_BY_NODE_PATH,
+  NODE_LIST_SCHEMA,
+  NODE_SCHEMA,
+  CREATE_NODE_BULK_BODY,
+} from './docs'
 
 @Controller('/base/:node', 'Base')
 export default class BaseController extends AppService {
-  @Get('', { parameters: GET_NODE_LIST_PARAMS })
+  @Get('', { parameters: GET_NODE_LIST_PARAMS, response_schema: NODE_LIST_SCHEMA })
   async getNodeList({ params, user }: Request) {
     const {
       node,
@@ -24,7 +32,7 @@ export default class BaseController extends AppService {
     return this.DB.filter(table_name, filters, { fields: filtered_fields, sort, pagination: { page, size }, search })
   }
 
-  @Get('/:id', { parameters: GET_NODE_DETAILS_PARAMS })
+  @Get('/:id', { parameters: GET_NODE_DETAILS_PARAMS, response_schema: NODE_SCHEMA })
   async getNodeDetails({ params, user }: Request) {
     const { node, id } = params
     const table_name = node.replace(/-/g, '_')
@@ -36,7 +44,7 @@ export default class BaseController extends AppService {
     return record
   }
 
-  @Post('', { requestBody: CREATE_NODE_BODY, parameters: [GET_BY_NODE_PATH] })
+  @Post('', { requestBody: CREATE_NODE_BODY, parameters: [GET_BY_NODE_PATH], response_schema: NODE_SCHEMA })
   async createNode({ params, user }: Request) {
     const { node } = params
     this.Model.base.validateRoleMutation(user)
@@ -46,14 +54,14 @@ export default class BaseController extends AppService {
     return this.DB.insert(node.replace(/-/g, '_'), params)
   }
 
-  @Post('/bulk')
+  @Post('/bulk', { requestBody: CREATE_NODE_BULK_BODY, response_schema: NODE_LIST_SCHEMA })
   async bulkCreate({ params, user }: Request) {
     const { node, data } = params
     this.Model.base.validateRoleMutation(user)
     return this.DB.insert(node.replace(/-/g, '_'), data)
   }
 
-  @Put('/:id', { parameters: GET_NODE_DETAILS_PARAMS })
+  @Put('/:id', { parameters: GET_NODE_DETAILS_PARAMS, response_schema: NODE_SCHEMA })
   async updateNode({ params, user }: Request) {
     const { node, id } = params
     const table_name = node.replace(/-/g, '_')

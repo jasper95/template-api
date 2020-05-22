@@ -1,4 +1,4 @@
-import { InitializerContext } from 'types'
+import { InitializerContext, Request } from 'types'
 import schema from 'schema'
 import { flow, upperFirst, camelCase, get } from 'lodash'
 import { transformColumnsToJsonSchema } from 'utils/dbwrapper/util'
@@ -7,18 +7,9 @@ import { swagger as swaggerConfig } from 'config'
 import deepmerge from 'deepmerge'
 
 export default async function initializeDocs(self: InitializerContext) {
-  // console.log('api_docs', util.inspect(self.api_docs, false, null))
   const options = {
     explorer: false,
     baseURL: '/api-docs',
-    // swaggerOptions: {
-    //   requestInterceptor: req => {
-    //     if (!req.loadSpec) {
-    //       const token = btoa(process.env.BASIC_USERNAME + ':' + process.env.BASIC_PASSWORD)
-    //       req.headers.Authorization = 'Basic ' + token
-    //     }
-    //   },
-    // },
   }
   const schemas = schema
     .filter(e => e.list_roles.length > 0)
@@ -33,7 +24,7 @@ export default async function initializeDocs(self: InitializerContext) {
     const routes = self.api_docs[tag]
     const result = routes.reduce((acc2, route) => {
       const { requestMethod, swagger_params = {} } = route
-      const { schema, ...rest_params } = swagger_params
+      const { schema, response_schema, ...rest_params } = swagger_params
       return deepmerge(acc2, {
         [route.path]: {
           [requestMethod === 'del' ? 'delete' : requestMethod]: {
@@ -49,6 +40,25 @@ export default async function initializeDocs(self: InitializerContext) {
                 },
               },
             }),
+            responses: {
+              200: {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: response_schema,
+                  },
+                },
+              },
+              400: {
+                $ref: '#/components/responses/BadRequest',
+              },
+              401: {
+                $ref: '#/components/responses/Unauthorized',
+              },
+              500: {
+                $ref: '#/components/responses/InternalError',
+              },
+            },
           },
         },
       })

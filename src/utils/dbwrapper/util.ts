@@ -94,9 +94,11 @@ export function transformColumnsToJsonSchema(columns: Column[]): JSONSchema7 {
       },
       created_date: {
         type: 'string',
+        readOnly: true,
       },
       updated_date: {
         type: 'string',
+        readOnly: true,
       },
       status: {
         type: 'string',
@@ -104,7 +106,7 @@ export function transformColumnsToJsonSchema(columns: Column[]): JSONSchema7 {
     },
   }
   return columns.reduce((acc, column) => {
-    const { required, column_name, enum: enums } = column
+    const { required, column_name, enum: enums, is_read_only } = column
     let { default: default_to } = column
     if (required) {
       acc.required.push(column_name)
@@ -112,6 +114,9 @@ export function transformColumnsToJsonSchema(columns: Column[]): JSONSchema7 {
     acc.properties[column_name] = getColumnType(column)
     if (enums) {
       Object.assign(acc.properties[column_name], { enum: enums })
+    }
+    if (is_read_only !== undefined) {
+      Object.assign(acc.properties[column_name], { readOnly: is_read_only })
     }
     if (default_to !== undefined) {
       if (default_to === '{}' || default_to === '[]') {

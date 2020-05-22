@@ -7,7 +7,7 @@ const unlinkAsync = util.promisify(fs.unlink)
 const favIconHtml =
   '<link rel="icon" type="image/png" href="/api-docs/favicon-32x32.png" sizes="32x32" />' +
   '<link rel="icon" type="image/png" href="/api-docs/favicon-16x16.png" sizes="16x16" />'
-let swaggerInit: any
+let swaggerInit: string
 
 function stringify(obj: any) {
   const placeholder = '____FUNCTIONPLACEHOLDER____'
@@ -86,11 +86,11 @@ export async function generateHTML(
 export async function setup(
   swaggerDoc: any,
   opts: any,
-  options: any,
-  customCss: any,
-  customfavIcon: any,
-  swaggerUrl: any,
-  customSiteTitle: any,
+  options?: any,
+  customCss?: any,
+  customfavIcon?: any,
+  swaggerUrl?: any,
+  customSiteTitle?: any,
 ) {
   const htmlWithOptions = await generateHTML(
     swaggerDoc,
