@@ -106,7 +106,6 @@ class BaseModel extends AppService {
     if (fields.length) {
       return fields.filter(e => filtered_fields.includes(e))
     }
-    console.log('filtered_fields: ', filtered_fields)
     return filtered_fields
   }
 }

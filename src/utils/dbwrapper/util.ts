@@ -1,5 +1,4 @@
 import Ajv, { ErrorObject } from 'ajv'
-import get from 'lodash/get'
 import omitBy from 'lodash/omitBy'
 import isNil from 'lodash/isNil'
 import { Column, Table, Sort } from 'types'
@@ -76,7 +75,12 @@ function getColumnType(column: Column): JSONSchema7 {
     }
   }
   if (type === 'jsonb') {
-    return schema
+    return (
+      schema || {
+        type: 'object',
+        properties: {},
+      }
+    )
   }
   return {
     type,

@@ -35,7 +35,7 @@ export const GET_LIST_PARAMS = [
     schema: {
       type: 'number',
       example: 0,
-      minimum: 0,
+      // minimum: 0,
     },
   },
   {
@@ -64,12 +64,12 @@ export const GET_LIST_PARAMS = [
       items: {
         $ref: '#/components/schemas/Sort',
       },
-      example: [
-        {
-          column: 'created_date',
-          direction: 'desc',
-        },
-      ],
+      // example: [
+      //   {
+      //     column: 'created_date',
+      //     direction: 'desc',
+      //   },
+      // ],
     },
   },
 ]

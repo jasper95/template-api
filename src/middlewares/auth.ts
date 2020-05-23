@@ -59,10 +59,7 @@ export default async function authMiddleware(req: Request, res: Response, next: 
       invalid_token = true
     }
   }
-  if (referer?.includes('/api-docs')) {
-    return next()
-  }
-  if (!matchRoutes(public_routes, req)) {
+  if (!matchRoutes(public_routes, req) && !referer?.includes('/api-docs') && process.env.NODE_ENV !== 'test') {
     if (
       req.username !== process.env.BASIC_USERNAME ||
       req.authorization?.basic?.password !== process.env.BASIC_PASSWORD

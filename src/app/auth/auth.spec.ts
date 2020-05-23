@@ -10,7 +10,7 @@ describe('Authentication Routes', () => {
   })
 
   test('Should retrieve session', async () => {
-    const response = await request.get('/auth/session').set('Authorization', 'Bearer ' + token)
+    const response = await request.get('/auth/session').set('Cookie', [`access_token=${token}`])
     expect(response.status).toBe(200)
   })
 })

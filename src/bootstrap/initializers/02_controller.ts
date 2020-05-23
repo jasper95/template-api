@@ -22,7 +22,7 @@ export default function initializeControllers(self: InitializerContext) {
     const [req, res] = args
     const omit_params = ['base64string', 'avatar']
     const validator = validators[prototype]
-    logger.info('%s - %s [Params: %s]', class_name, prototype, util.inspect(omit(req.params, omit_params)))
+    logger.info('%s - %s [Params: %s]', class_name, prototype, util.inspect(omit(req.params, omit_params), false, null))
     const validation = validator ? validateJsonSchema(req.params, validator) : Promise.resolve()
     const route_roles = access_roles[prototype] || USER_ROLES
     return validation

@@ -19,26 +19,27 @@ npm install
 
 ## Environment Variables
 
-Setup environment variables on development/test/production. Configuration files are located under `environments` directory. You only need to change database configuration as follows
+Setup environment variables on development/test/production. Configuration files are located under `environments` directory. Follow the naming convention `.env.{environment}`, example `.env.development`
 
 ```
 BASIC_PASSWORD=
 BASIC_USERNAME=
-
 DB_CLIENT=pg
 DB_HOST=
 DB_NAME=
 DB_PASSWORD=
 DB_PORT=5432
 DB_USER=
-
-AUTH_SECRET=
-TOKEN_EXPIRY_DAYS=
+AUTH_SECRET=F0nch3rt0
+TOKEN_EXPIRY_DAYS=365
+MOUNT=mnt
+AWS_SECRET_ACCESS_KEY=
+AWS_ACCESS_KEY=
 PROJECT_NAME=
+EMAIL_FROM=
 SENDGRID_API_KEY=
 AZURE_STORE_CONNECTION=
 AZURE_CONTAINER=
-PORT=
 ```
 
 ## Development
@@ -87,6 +88,23 @@ Running the app in production automatically updates database schema and seeds in
 
 ## Test
 
+Add test environment variables by creating `.env.test` file under `environments` directory
+
 ```
 npm test
+```
+
+## Documentation
+
+Open the API documentation on this route `/api-docs`.
+
+## Authentication
+
+All routes are protected by Basic Authentication. Routes that need current user session are protected by JWT Authentication. Authorize your requests with JWT by logging in using this route `/auth/login`. CSRF Token is also implemented because this API uses Cookie-based (http only) JWT.
+
+### Sample Credentials
+
+```
+email: bernalesjasper@gmail.com
+password: test
 ```

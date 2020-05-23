@@ -120,7 +120,6 @@ class QueryWrapper {
     set(temp_config, 'connection.database', 'postgres')
     const temp_knex = knex(temp_config)
     await temp_knex.raw(action.toLowerCase()).catch(err => {
-      console.log('err: ', err)
       false
     })
     temp_knex.destroy()

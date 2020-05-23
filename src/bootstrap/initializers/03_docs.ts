@@ -1,6 +1,6 @@
-import { InitializerContext, Request } from 'types'
+import { InitializerContext } from 'types'
 import schema from 'schema'
-import { flow, upperFirst, camelCase, get } from 'lodash'
+import { flow, upperFirst, camelCase } from 'lodash'
 import { transformColumnsToJsonSchema } from 'utils/dbwrapper/util'
 import * as swaggerMiddleware from 'middlewares/swagger'
 import { swagger as swaggerConfig } from 'config'
@@ -25,8 +25,16 @@ export default async function initializeDocs(self: InitializerContext) {
     const result = routes.reduce((acc2, route) => {
       const { requestMethod, swagger_params = {} } = route
       const { schema, response_schema, ...rest_params } = swagger_params
+      const path_vars = route.path.match(/\:([a-z]+)/g)
+      let route_path = route.path
+      if (path_vars) {
+        route_path = path_vars.reduce((acc: string, el: string) => {
+          const path_var = `{${el.replace(':', '')}}`
+          return acc.replace(el, path_var)
+        }, route.path)
+      }
       return deepmerge(acc2, {
-        [route.path]: {
+        [route_path]: {
           [requestMethod === 'del' ? 'delete' : requestMethod]: {
             tags: [tag],
             ...rest_params,

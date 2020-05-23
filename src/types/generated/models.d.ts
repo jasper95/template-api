@@ -44,3 +44,25 @@ export interface AuthSession {
   device_type: string
   [k: string]: any | undefined
 }
+
+export interface Blog {
+  id?: string
+  created_date?: string
+  updated_date?: string
+  status?: string
+  slug: string
+  name: string
+  content?: {
+    [k: string]: any | undefined
+  }
+  excerpt: string
+  tags?: {
+    [k: string]: any | undefined
+  }
+  image_url: string
+  published_date: string
+  user_id: string
+  is_posted?: boolean
+  type?: string
+  [k: string]: any | undefined
+}

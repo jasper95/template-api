@@ -40,7 +40,7 @@ function proxyHandler(
 ) {
   const logger = serviceLocator.get('logger')
   if (!prototype.includes('_')) {
-    logger.info('%s - %s Params: %s', target.constructor.name, prototype, util.inspect(args))
+    logger.info('%s - %s Params: %s', target.constructor.name, prototype, util.inspect(args, false, null))
   }
   return targetValue.apply(ctx, args)
 }

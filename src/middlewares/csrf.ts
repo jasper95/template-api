@@ -31,7 +31,8 @@ export default function csrfMiddleware(options?: Options) {
     if (
       !['GET', 'HEAD', 'OPTIONS'].includes(req.method) &&
       !tokens.verify(secret, csrf_token) &&
-      !referer?.includes('/api-docs')
+      !referer?.includes('/api-docs') &&
+      process.env.NODE_ENV !== 'test'
     ) {
       return res.send(403, { message: 'invalid csrf token', code: 'EBADCSRFTOKEN' })
     }
