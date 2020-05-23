@@ -19,7 +19,7 @@ npm install
 
 ## Environment Variables
 
-Setup environment variables on development/test/production. Configuration files are located under `environments` directory. Follow the naming convention `.env.{environment}`, example `.env.development`
+Setup environment variables on development/test/production. Configuration files are located under `{rootDir}/environments` directory. Follow the naming convention `.env.{environment}`, example `.env.development`
 
 ```
 BASIC_PASSWORD=
@@ -88,7 +88,7 @@ Running the app in production automatically updates database schema and seeds in
 
 ## Test
 
-Add test environment variables by creating `.env.test` file under `environments` directory
+Add test environment variables by creating `.env.test` file under `{rootDir}/environments` directory
 
 ```
 npm test
