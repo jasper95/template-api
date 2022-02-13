@@ -25,7 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
-    "ajv": "^6.10.2",
+    "ajv": "^6.12.3",
     "ajv-bsontype": "^1.0.7",
     "aws-sdk": "^2.568.0",
     "azure-storage": "^2.10.3",
